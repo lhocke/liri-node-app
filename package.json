@@ -1,16 +1,29 @@
 {
   "name": "liri-node-app",
   "version": "1.0.0",
-  "description": "My first bot, hopefully to be expanded on",
+  "description": "A simple app that scans twitter and spotify",
   "main": "liri.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lhocke/liri-node-app.git"
+  },
+  "keywords": [
+    "liri",
+    "twitter",
+    "spotify"
+  ],
+  "author": "Dylan Ishihara",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lhocke/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/lhocke/liri-node-app#readme",
   "dependencies": {
     "node-spotify-api": "^1.0.5",
     "request": "^2.81.0",
     "twitter": "^1.7.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lhocke/liri-node-app.git"
-  },
-  "license": "MIT"
+  }
 }
