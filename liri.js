@@ -29,18 +29,18 @@ switch(functionUsed){
 // core functions
 function myTweets() {
 	console.log("running")
-// grab the last 20 tweets and display with timestamps
+// import keys
     var client = new Twitter({
         consumer_key: twitterKeys.consumer_key,
         consumer_secret: twitterKeys.consumer_secret,
         access_token_key: twitterKeys.access_token_key,
         access_token_secret: twitterKeys.access_token_secret,
     })
-
+// set the user to search
     if (query = undefined) {
         query = "lhocke";
     }
-
+// grab the last 20 tweets and display with timestamps
     var params = {q: query, count: "20"}
     client.get('statuses/user_timeline', params, function(error, tweets, response){
     	for (var i = 0; i < tweets.length; i++){
@@ -51,7 +51,16 @@ function myTweets() {
 };
 
 function spotify-this-song() {
+// import keys
+    var spotify = ({
+        id: spotifyKeys.client_id,
+        secret: spotifyKeys.client_secret
+    });
 
+// construct objects for songs returned
+    var Song = function(artist, name, preview, album) {
+        this
+    }
 };
 
 // function movie-this() {
