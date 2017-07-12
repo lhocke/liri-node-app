@@ -5,34 +5,54 @@ var request = require('request');
 var fs = require('fs');
 var keys = require("./keys.js")
 // new variables
+var functionUsed = process.argv[2];
 var twitterKeys = keys.twitterKeys;
 var spotifyKeys = keys.spotifyKeys;
-// var keys = fs.readFile("keys.js");
-// console.log(twitterKeys);
-// console.log("----------------------")
-// console.log(spotifyKeys)
-var functionUsed = process.argv[2] + "()";
-console.log(typeof(functionUsed))
-// functionUsed
+var query = process.argv.slice(3);
+console.log(query);
 
+switch(functionUsed){
+    case "my-tweets":
+        console.log("switch")
+        myTweets()
+        break;
+    case "spotify-this-song":
+        console.log("second switch")
+        break;
+    case "movie-this":
+        console.log("third switch")
+        break;
+    case "do-what-it-says":
+        console.log("fourth switch")
+        break;
+}
 // core functions
 function myTweets() {
 	console.log("running")
 // grab the last 20 tweets and display with timestamps
     var client = new Twitter({
-        consumer_key: process.env.twitterKeys.consumer_key,
-        consumer_secret: process.env.twitterKeys.consumer_secret,
-        access_token_key: process.env.twitterKeys.access_token_key,
-        access_token_secret: process.env.twitterKeys.access_token_secret,
+        consumer_key: twitterKeys.consumer_key,
+        consumer_secret: twitterKeys.consumer_secret,
+        access_token_key: twitterKeys.access_token_key,
+        access_token_secret: twitterKeys.access_token_secret,
     })
-    client.get('search.tweets', {q: "from:lhocke", count: "20"}, function(error, tweets, response){
-    	console.log(tweets);
+
+    if (query = undefined) {
+        query = "lhocke";
+    }
+
+    var params = {q: query, count: "20"}
+    client.get('statuses/user_timeline', params, function(error, tweets, response){
+    	for (var i = 0; i < tweets.length; i++){
+            console.log(i + 1 + ": " + tweets[i].text);
+        }
+        // console.log(tweets[0].text);
     })
 };
 
-// function spotify-this-song() {
+function spotify-this-song() {
 
-// };
+};
 
 // function movie-this() {
 // connect to omdbapi and get json info
