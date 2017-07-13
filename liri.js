@@ -22,15 +22,15 @@ switch(functionUsed) {
         break;
     case "movie-this":
         console.log("third switch")
+        movieThis()
         break;
     case "do-what-it-says":
         console.log("fourth switch")
+        doWhatItSays()
         break;
 }
 // core functions
 function myTweets() {
-    console.log("running")
-    // console.log(searchTerms + "1")
 // import keys
     var client = new Twitter({
         consumer_key: twitterKeys.consumer_key,
@@ -38,26 +38,18 @@ function myTweets() {
         access_token_key: twitterKeys.access_token_key,
         access_token_secret: twitterKeys.access_token_secret
     })
-// set the user to searchTerms
-    // if (searchTerms = undefined) {
-    //     searchTerms = "lhocke";
-    // } else {
-    //     searchTerms = searchTerms
-    // }
 // grab the last 20 tweets and display with timestamps
     console.log(searchTerms)
     var params = {screen_name: searchTerms, count: "20"}
-    // console.log(params)
     client.get('statuses/user_timeline', params, function(error, tweets, response){
         if (error) {
             return console.log('Error occurred: ' + error);
         }
         else{
             for (var i = 0; i < tweets.length; i++){
-                console.log(i + 1 + ": " + tweets[i].text);
+                console.log(i + 1 + ": " + tweets[i].text + "\n    " + tweets[i].created_at + "\n-----------------------------------------------");
             }
         }
-        // console.log(tweets);
     })
 };
 
@@ -74,22 +66,29 @@ function spotifyThisSong() {
     // }
     if (searchTerms = undefined){
         searchTerms = 'The Sign'
-        console.log(searchTerms)
+        // searchArtist = 'Ace of Base'
+        // console.log(searchTerms)
     }
-    // console.log(search)
+    // console.log(searchTerms)
     // console.log(typeOf)
-    spotify.search({ type: 'track', query: searchTerms }, function(err, data) {
+    spotify.search({ type: ['track', 'artist'], query: [searchTerms, 'Ace of Base'] }, function(err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-
-        console.log(data.tracks.items[0].name);
+        var tracks = data.tracks.items;
+        var stringified = JSON.stringify(tracks);
+        // console.log(JSON.stringify(tracks, null, 2))
+        for (var i = 0; i < tracks.length; i++)
+        console.log("Track Name: " + tracks[i].name + "\nArtist: " + tracks[i].album.artists.name);
+        // console.log(JSON.stringify(tracks[i].artists[i]))
+        // console.log(JSON.stringify(tracks, null, 2) + "\n--------------------------------------------------------")
         });
     }
 
-// function movie-this() {
+function movieThis() {
+    console.log("movies")
 // connect to omdbapi and get json info
-// default to Mr. Nobody if now user input
+// default to Mr. Nobody if no user input
 
 // output the following
 // Title of the movie.
@@ -108,14 +107,22 @@ function spotifyThisSong() {
 
 // Actors in the movie.
 
-// };
+};
 
-// function do-what-it-says() {
-// fs.readFile("random.txt", "utf8", function(error, data){
-//       if (error){
-//         return console.log(error)
-//       }
-//       console.log(data)
-// })
+function doWhatItSays() {
+    fs.readFile("random.txt", "utf8", function(error, data){
+      if (error){
+        return console.log(error)
+      }
+      console.log(data)
+      data = data.split(",")
+      console.log(data)
+      var thingToDo = data[0] + "()";
+      var doItTo = data[1];
+      console.log(thingToDo)
+      // console.log(doItTo)
+      searchTerms = doItTo
+      spotifyThisSong()
+    })
 
-// };
+};
