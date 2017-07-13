@@ -8,8 +8,8 @@ var keys = require("./keys.js")
 var functionUsed = process.argv[2];
 var twitterKeys = keys.twitterKeys;
 var spotifyKeys = keys.spotifyKeys;
-var query = process.argv.slice(3);
-console.log(query);
+var searchTerms = process.argv.slice(3).toString();
+console.log(searchTerms);
 
 switch(functionUsed) {
     case "my-tweets":
@@ -30,6 +30,7 @@ switch(functionUsed) {
 // core functions
 function myTweets() {
     console.log("running")
+    // console.log(searchTerms + "1")
 // import keys
     var client = new Twitter({
         consumer_key: twitterKeys.consumer_key,
@@ -37,17 +38,26 @@ function myTweets() {
         access_token_key: twitterKeys.access_token_key,
         access_token_secret: twitterKeys.access_token_secret
     })
-// set the user to search
-    if (query = undefined) {
-        query = "lhocke";
-    }
+// set the user to searchTerms
+    // if (searchTerms = undefined) {
+    //     searchTerms = "lhocke";
+    // } else {
+    //     searchTerms = searchTerms
+    // }
 // grab the last 20 tweets and display with timestamps
-    var params = {q: query, count: "20"}
+    console.log(searchTerms)
+    var params = {screen_name: searchTerms, count: "20"}
+    // console.log(params)
     client.get('statuses/user_timeline', params, function(error, tweets, response){
-        for (var i = 0; i < tweets.length; i++){
-            console.log(i + 1 + ": " + tweets[i].text);
+        if (error) {
+            return console.log('Error occurred: ' + error);
         }
-        // console.log(tweets[0].text);
+        else{
+            for (var i = 0; i < tweets.length; i++){
+                console.log(i + 1 + ": " + tweets[i].text);
+            }
+        }
+        // console.log(tweets);
     })
 };
 
@@ -62,11 +72,13 @@ function spotifyThisSong() {
     // var Song = function(artist, name, preview, album) {
     //     this
     // }
-    if (query = undefined){
-        query = "The Sign"
-        var type =
+    if (searchTerms = undefined){
+        searchTerms = 'The Sign'
+        console.log(searchTerms)
     }
-    spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+    // console.log(search)
+    // console.log(typeOf)
+    spotify.search({ type: 'track', query: searchTerms }, function(err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
