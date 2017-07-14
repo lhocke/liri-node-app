@@ -89,7 +89,7 @@ function spotifySearch() {
         var tracks = data.tracks.items;
         for (var i = 0; i < tracks.length; i++){
             console.log("inside loop")
-            console.log("\nTrack Name: " + tracks[i].name + "\nArtist: " + tracks[i].artists[0].name + "\nPreview: " + tracks[i].preview_url + "\n------------------------------------------------\n");
+            console.log("\nTrack Name: " + tracks[i].name + "\nArtist: " + tracks[i].artists[0].name + "\nAlbum: " + tracks[i].album.name + "\nPreview: " + tracks[i].preview_url + "\n------------------------------------------------\n");
         }
     })
 }
