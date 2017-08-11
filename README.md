@@ -3,6 +3,12 @@ My first bot
 
 LIRI takes input from the command line to determine which function a user wants to run, then uses inquirer to walk the user through that function to return the desired results.
 
+called using node liri.js and one of the following commands:
+- my-tweets
+- spotify-this-song
+- movie-this
+- do-what-it-says
+
 Live Demo:
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=XfLck-LdYcg
