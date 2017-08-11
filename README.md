@@ -7,10 +7,10 @@ Live Demo:
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=XfLck-LdYcg
 " target="_blank"><img src="http://img.youtube.com/vi/XfLck-LdYcg/0.jpg" 
-alt="LIRI Demo" width="240" height="180" border="10" /></a>
+alt="LIRI Demo" width="300" height="180" border="10" /></a>
 
 Code Walkthrough:
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=JwFwQR2xckA
 " target="_blank"><img src="http://img.youtube.com/vi/JwFwQR2xckA/0.jpg" 
-alt="LIRI Code Walkthrough" width="240" height="180" border="10" /></a>
+alt="LIRI Code Walkthrough" width="300" height="180" border="10" /></a>
