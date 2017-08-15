@@ -57,18 +57,32 @@ function myTweets() {
     ]).then(function(twitterResponse){
         var params = {screen_name: twitterResponse.twitterHandle, count: "20"};
         var userName = twitterResponse.twitterHandle;
+        if(!twitterResponse.twitterHandle){
+            userName = "lhocke"
+        }
         client.get('statuses/user_timeline', params, function(error, tweets, response){
             if (error) {
                 return console.log('Error occurred: ' + error);
             } else {
                 console.log("\nTweets from: @" + userName + "\n")
+                fs.appendFile('log.txt', '\nmy-tweets (@' + userName + ')\n\n', function(err){
+                    if (err){
+                        console.log(err);
+                    }
+                })
                 for (var i = 0; i < tweets.length; i++){
                     console.log(i + 1 + ": " + tweets[i].text + "\n    " + tweets[i].created_at + "\n-----------------------------------------------");
+                    var output = i + 1 + ": " + tweets[i].text + "\n    " + tweets[i].created_at + "\n-----------------------------------------------\n";
+                    fs.appendFile("log.txt", output + "\n", function(err){
+                        if (err){
+                            console.log(err);
+                        }
+                    })
                 }
             }
             // fs.appendFile('log.txt', "my-tweets (" + twitterResponse.twitterHandle + "), ")
         })
-        fs.appendFile('log.txt', "my-tweets (" + userName + "), ")
+        // fs.appendFile('log.txt', "my-tweets (" + userName + "), ")
 
     })
 
@@ -89,7 +103,13 @@ function spotifySearch() {
         var tracks = data.tracks.items;
         for (var i = 0; i < tracks.length; i++){
             // console.log("inside loop")
-            console.log("\nTrack Name: " + tracks[i].name + "\nArtist: " + tracks[i].artists[0].name + "\nAlbum: " + tracks[i].album.name + "\nPreview: " + tracks[i].preview_url + "\n------------------------------------------------\n");
+            var output = "\nTrack Name: " + tracks[i].name + "\nArtist: " + tracks[i].artists[0].name + "\nAlbum: " + tracks[i].album.name + "\nPreview: " + tracks[i].preview_url + "\n------------------------------------------------\n"
+            console.log(output);
+            fs.appendFile('log.txt', "\nspotify-this-song (" + song + "), " + output, function(err){
+                if (err){
+                    console.log(err);
+                }
+            })
         }
     })
 }
@@ -125,7 +145,6 @@ function spotifyThisSong() {
                 band = spotifyResponse.band;
                 count = 10
             }
-            fs.appendFile('log.txt', "spotify-this-song (" + song + "), ")
             spotifySearch()
         })
     }
@@ -143,87 +162,105 @@ inquirer
         }
     ]).then(function(movieResponse){
 
-            fs.appendFile('log.txt', "movie-this (" + movieResponse.title + "), ")
+        var title;
 
-            var title;
+        if (!movieResponse.title && !searchTerms){
+            title = "mr+nobody";
+        } else if (searchTerms){
+            title = searchTerms.toLowerCase();
+            title.replace(" ", "+");
+        } else {
+            title = movieResponse.title.toLowerCase();
+            title.replace(" ", "+");
+        };
 
-            if (!movieResponse.title && !searchTerms){
-                title = "mr+nobody";
-            } else if (searchTerms){
-                title = searchTerms.toLowerCase();
-                title.replace(" ", "+");
-            } else {
-                title = movieResponse.title.toLowerCase();
-                title.replace(" ", "+");
-            };
-
-            request('http://www.omdbapi.com/?apikey=40e9cece&s=' + title, function (error, response, body) {
-            if (error) {
-                console.log('error:', error);
-            } else { 
-            // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
-            // Print the HTML for the Google homepage.
-            // output the following:
-                var bodyParse = JSON.parse(body);
-                var results = bodyParse.Search;
-                var movieID;
-
-                for (var i = 0; i < results.length; i++){
-                    movieID = results[i].imdbID;
-                    request('http://www.omdbapi.com/?apikey=40e9cece&i=' + movieID, function (error, response, body) {
-                        // console.log(JSON.parse(body, null, 2))
-                        var newResults = JSON.parse(body)
-                        // Title of the movie.
-                        console.log("\nTitle: " + newResults.Title);
-
-                        // Year the movie came out.
-                        console.log("Year: " + newResults.Year);
-
-                        // IMDB Rating of the movie.
-                        console.log("IMDB Rating: " + newResults.imdbRating);
-
-                        // Rotten Tomatoes Rating of the movie.
-                        if (!newResults.Ratings[2]) {
-                            console.log("Rotten Tomatoes: N/A");
-                        } else {
-                            console.log("Rotten Tomatoes: " + newResults.Ratings[2].Value);
-                        }
-                        // Country where the movie was produced.
-                        console.log("Country: " + newResults.Country);
-
-                        // Language of the movie.
-                        console.log("Language: " + newResults.Language);
-
-                        // Plot of the movie.
-                        console.log("Plot: " + newResults.Plot);
-
-                        // Actors in the movie.
-                        console.log("Cast: " + newResults.Actors + "\n-------------------------------------------------\n")
-                    })
-                }
+        fs.appendFile('log.txt', "movie-this (" + title + ")\n", function(err){
+            if (err){
+                console.log(err);
             }
         })
 
+        })
+        request('http://www.omdbapi.com/?apikey=40e9cece&s=' + title, function (error, response, body) {
+        if (error) {
+            console.log('error:', error);
+        } else { 
+        // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
+        // Print the HTML for the Google homepage.
+        // output the following:
+            var bodyParse = JSON.parse(body);
+            var results = bodyParse.Search;
+            var movieID;
+
+            for (var i = 0; i < results.length; i++){
+                movieID = results[i].imdbID;
+                request('http://www.omdbapi.com/?apikey=40e9cece&i=' + movieID, function (error, response, body) {
+                    // console.log(JSON.parse(body, null, 2))
+                    var newResults = JSON.parse(body)
+
+                    // Title of the movie.
+                    console.log("\nTitle: " + newResults.Title);
+
+                    // Year the movie came out.
+                    console.log("Year: " + newResults.Year);
+
+                    // IMDB Rating of the movie.
+                    console.log("IMDB Rating: " + newResults.imdbRating);
+
+                    // Rotten Tomatoes Rating of the movie.
+                    var rottenTomatoes;
+                    if (!newResults.Ratings[2]) {
+                        console.log("Rotten Tomatoes: N/A");
+                        rottenTomatoes = "\nRotten Tomatoes: N/A"
+                    } else {
+                        console.log("Rotten Tomatoes: " + newResults.Ratings[2].Value);
+                        rottenTomatoes = newResults.Ratings[2].Value;
+                    }
+                    // Country where the movie was produced.
+                    console.log("Country: " + newResults.Country);
+
+                    // Language of the movie.
+                    console.log("Language: " + newResults.Language);
+
+                    // Plot of the movie.
+                    console.log("Plot: " + newResults.Plot);
+
+                    // Actors in the movie.
+                    console.log("Cast: " + newResults.Actors + "\n-------------------------------------------------\n")
+                    var output = "\nTitle: " + newResults.Title + "\nYear: " + newResults.Year + "\nIMDB Rating: " + newResults.imdbRating + "\n" + rottenTomatoes
+                    + "\nCountry: " + newResults.Country + "\nLanguage: " + newResults.Language + "\nPlot: " + newResults.Plot
+                    fs.appendFile('log.txt', output + " ", function(err){
+                        if (err){
+                            console.log(err);
+                        }
+                    })   
+                })
+            }
+        }
     })
 };
 
 function doWhatItSays() {
     fs.readFile('random.txt', 'utf8', function(error, data) {
 
-    // If the code experiences any errors it will log the error to the console.
-    if (error) {
-        return console.log(error);
-    }
+        // If the code experiences any errors it will log the error to the console.
+        if (error) {
+            return console.log(error);
+        }
 
-    var dataArr = data.split(',');
-    if (dataArr[0] === "do-what-it-says"){
-        return false;
-    } else {
-        functionUsed = dataArr[0];
-        searchTerms = dataArr[1];
-        searchTerms = searchTerms.slice(1,-1)
-        fs.appendFile('log.txt', "do-what-it-says, ")
-    }
-    core();
+        var dataArr = data.split(',');
+        if (dataArr[0] === "do-what-it-says"){
+            return false;
+        } else {
+            functionUsed = dataArr[0];
+            searchTerms = dataArr[1];
+            searchTerms = searchTerms.slice(1,-1)
+            fs.appendFile('log.txt', "\ndo-what-it-says", function(err){
+                if (err) {
+                    console.log(err);
+                }
+            })
+        }
+        core();
     });
 }
