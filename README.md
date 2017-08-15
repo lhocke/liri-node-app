@@ -5,12 +5,16 @@ LIRI takes input from the command line to determine which function a user wants 
 
 called using node liri.js and one of the following commands:
 - my-tweets
+
 ![Get Tweets](/demo-gifs/call-tweets.gif)
 - spotify-this-song
+
 ![Check Spotify](/demo-gifs/call-spotify.gif)
 - movie-this
+
 ![Get Movie Info](/demo-gifs/call-movie.gif)
 - do-what-it-says
+
 ![Get Command From File](/demo-gifs/call-text.gif)
 
 Live Demo:
