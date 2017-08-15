@@ -15,7 +15,7 @@ Calls the Spotify API to retrieve the top 10 responses to a users request. If no
 ![Check Spotify](/demo-gifs/call-spotify.gif)
 ## movie-this
 
-Calls on the OMDB to retrieve infomation on a given movie. If no movie is specified, it will instead call for Mr. Nobody.
+Calls on the OMDB API to retrieve infomation on a given movie. If no movie is specified, it will instead call for Mr. Nobody.
 
 ![Get Movie Info](/demo-gifs/call-movie.gif)
 ## do-what-it-says
